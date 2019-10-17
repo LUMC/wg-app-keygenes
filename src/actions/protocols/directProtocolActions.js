@@ -7,13 +7,19 @@ export const directProtocol = (config, data) => async (dispatch) => {
     bodyFormData.set('email', data.email);
     bodyFormData.set('training', data.training);
     bodyFormData.append('file', data.file[0]);
-    await axios({
+    const result = await axios({
         method: 'post',
         url: config.tool_reference,
         data: bodyFormData,
         config: { headers: {'Content-Type': 'multipart/form-data',  'Accept': 'text/html' }}
     });
-    dispatch({
-        type:protocol.PROTOCOL_COMPLETED
-    });
+    if(result.data.includes("Succesfully submitted. Please check your email in a few minutes")){
+        dispatch({
+            type:protocol.PROTOCOL_COMPLETED
+        });
+    }else{
+        dispatch({
+            type:protocol.PROTOCOL_FAILED
+        });
+    }
 };
