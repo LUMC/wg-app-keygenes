@@ -4,11 +4,13 @@ import configReducer from './configReducer'
 import collectionsReducer from "./collectionsReducer";
 import protocolStatusReducer from './protocols/protocolStatusReducer'
 import applicationReducer from "./applicationReducer";
+import {modules} from "./modules";
 
 export default combineReducers({
     form: formReducer,
     protocolStatus: protocolStatusReducer,
     application: applicationReducer,
     config: configReducer,
-    collections: collectionsReducer
+    collections: collectionsReducer,
+    modules: modules
 });

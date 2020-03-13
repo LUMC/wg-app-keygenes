@@ -9,6 +9,8 @@ import ContactCardsModule from "./ContactCardsModule";
 import FormModule from "./FormModule";
 import {throwError} from "../../utils/generalHelpers";
 import {moduleError} from "../../constants/errorTypes";
+import GeneFinderModule from "./GeneFinderModule";
+import Page from "../Page";
 
 const ModuleLoader = (props) =>  {
     switch(props.setting.module) {
@@ -59,6 +61,17 @@ const ModuleLoader = (props) =>  {
                     protocolStatus={props.protocolStatus}
                 />
             );
+        case 'transcript-finder':
+            return (
+                <GeneFinderModule
+                    collection={props.collection}
+                    moduleData={props.modulesData.geneFinder}
+                    getGeneSuggestions={props.getGeneSuggestions}
+                    setGene={props.setGene}
+                    setting={props.setting}
+                    getGeneCounts={props.getGeneCounts}
+                />
+            )
         default:
             throwError.module(moduleError.INVALID_MODULE);
             return null

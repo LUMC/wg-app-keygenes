@@ -13,9 +13,13 @@ import {Route, Router, Switch} from "react-router-dom";
 import Page from "../components/Page";
 import {directProtocol} from '../actions/protocols/directProtocolActions'
 
+
+
 import {projectName, baseUrl} from "../config.js";
 import {throwError} from "../utils/generalHelpers";
 import {configError} from '../constants/errorTypes'
+import GeneFinderModule from "../components/modules/GeneFinderModule";
+import {getGeneSuggestions, setGene, getGeneCounts} from "../actions/modules/geneFinderActions";
 
 
 class AppContainer extends Component {
@@ -48,6 +52,12 @@ class AppContainer extends Component {
                                 collections.push('inputs');
                             }
                             collections.push(item.collection)
+                        }
+                        else{
+                            if(item.module === "transcript-finder"){
+                                collections.push("tissue")
+                                collections.push("stage")
+                            }
                         }
                     }
                 )
@@ -90,6 +100,10 @@ class AppContainer extends Component {
                         render={(props) => this.wrapTransition(
                             <Page
                                 {...props}
+                                modulesData={this.props.modules}
+                                getGeneSuggestions={this.props.getGeneSuggestions}
+                                setGene={this.props.setGene}
+                                getGeneCounts={this.props.getGeneCounts}
                                 path={'/'+item.reference}
                                 config={item}
                                 collections={this.props.collections}
@@ -117,6 +131,10 @@ class AppContainer extends Component {
                         exact
                         render={(props) => this.wrapTransition(
                             <Page {...props}
+                                  modulesData={this.props.modules}
+                                  getGeneSuggestions={this.props.getGeneSuggestions}
+                                  setGene={this.props.setGene}
+                                  getGeneCounts={this.props.getGeneCounts}
                                   path={'/'+this.props.config[0].reference}
                                   config={this.props.config[0]}
                                   collections={this.props.collections}
@@ -172,7 +190,17 @@ const mapStateToProps = (state) => {
         config: _.values(state.config),
         collections: state.collections,
         protocolStatus:state.protocolStatus,
-        application: state.application[0]
+        application: state.application[0],
+        modules: state.modules
     }
 };
-export default connect(mapStateToProps, {getConfig, getApplication, getCollections, directProtocol})(AppContainer)
+export default connect(mapStateToProps,{
+        getConfig,
+        getApplication,
+        getCollections,
+        directProtocol,
+        getGeneSuggestions,
+        setGene,
+        getGeneCounts
+}
+    )(AppContainer)

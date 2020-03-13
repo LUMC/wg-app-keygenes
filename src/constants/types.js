@@ -16,3 +16,12 @@ export const application ={
     GET_APPLICATION_DONE: "GET_APPLICATION_DONE",
     GET_APPLICATION_FAILED: "GET_APPLICATION_FAILED"
 };
+
+export const modules ={
+    geneFinder: {
+        GET_SUGGESTIONS: "GET_SUGGESTIONS",
+        SET_ACTIVE_GENE: "SET_ACTIVE_GENE",
+        GET_GENE_COUNTS: "GET_GENE_COUNTS"
+    }
+
+};

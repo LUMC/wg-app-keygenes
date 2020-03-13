@@ -22,6 +22,9 @@ class Page extends Component{
                 if (setting.module === 'form'){
                     return(
                         <ModuleLoader
+                            setGene={this.props.setGene}
+                            getGeneSuggestions={this.props.getGeneSuggestions}
+                            getGeneCounts={this.props.getGeneCounts}
                             onSubmit={this.props.onSubmit}
                             page={this.props.config.name}
                             key={`module-${this.props.config.reference}-${key}`}
@@ -34,8 +37,29 @@ class Page extends Component{
                         />
                     )
                 }
+                if(setting.module === 'transcript-finder'){
+                    return (
+                        <ModuleLoader
+                            modulesData={this.props.modulesData}
+                            setGene={this.props.setGene}
+                            getGeneSuggestions={this.props.getGeneSuggestions}
+                            getGeneCounts={this.props.getGeneCounts}
+                            page={this.props.config.name}
+                            key={`module-${this.props.config.reference}-${key}`}
+                            collection={{
+                                'tissue': this.getCollection('tissue'),
+                                'stage': this.getCollection('stage')
+                            }}
+                            setting={setting}
+                        />
+                    )
+                }
                 return (
                     <ModuleLoader
+                        modulesData={this.props.modulesData}
+                        setGene={this.props.setGene}
+                        getGeneSuggestions={this.props.getGeneSuggestions}
+                        getGeneCounts={this.props.getGeneCounts}
                         page={this.props.config.name}
                         key={`module-${this.props.config.reference}-${key}`}
                         collection={this.getCollection(setting.collection)}
