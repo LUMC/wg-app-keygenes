@@ -1,2 +1,2 @@
-export const baseUrl='http://localhost/projects/webapp-gen-system/directus/public/keygenestest/';
+export const baseUrl='http://165.22.196.58:8080/keygenesnew/';
 export const projectName='KeyGenes';

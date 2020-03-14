@@ -19,7 +19,8 @@ export default (state=[], action) => {
                             title: `${item.symbol} | ${item.ensg}`,
                             description: item.description,
                             id:item.id,
-                            ensg: item.ensg
+                            ensg: item.ensg,
+                            symbol: item.symbol
                         })
                     }
 
