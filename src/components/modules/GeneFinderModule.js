@@ -28,9 +28,12 @@ class GeneFinderModule extends Component {
         const stage_groups = _.groupBy(data, 'stage')
         const stages  = this.state.stages;
         Object.keys(stage_groups).forEach(function(key) {
+            let items = _.remove(stage_groups[key], function(currentObject) {
+                return currentObject.count !== "nan";
+            });
             const trace = {
-                x: _.map(stage_groups[key], 'tissue'),
-                y: _.map(stage_groups[key], 'count'),
+                x: _.map(items, 'tissue'),
+                y: _.map(items, 'count'),
                 mode: 'markers',
                 type: 'scatter',
                 name: stages[key],
