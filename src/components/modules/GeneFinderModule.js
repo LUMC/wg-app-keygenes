@@ -53,7 +53,7 @@ class GeneFinderModule extends Component {
                     <Plot
                     data={plotTraces}
                     layout={{width: 1200, height: 600, hovermode:'closest',
-                        title: `Transcription in ${this.props.moduleData.activeGene.ensg}\ 
+                        title: `Expression in ${this.props.moduleData.activeGene.ensg}\ 
 ${this.props.moduleData.activeGene.symbol?` (${this.props.moduleData.activeGene.symbol})`:''}\
 ${this.props.moduleData.activeGene.description?` - ${this.props.moduleData.activeGene.description}`:''}`,
                         xaxis: {
