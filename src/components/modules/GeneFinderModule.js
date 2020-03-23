@@ -111,7 +111,7 @@ ${this.props.moduleData.activeGene.description?` - ${this.props.moduleData.activ
                     <Grid.Column width={8}>
                         <Form >
                             <Form.Field>
-                                <label>Search using the Gene symbol or ENSG-code</label>
+                                <label>Search using the gene symbol,ensembl id or gene description</label>
                                 <Search
                                     loading={isLoading}
                                     onResultSelect={this.handleResultSelect}
