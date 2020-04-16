@@ -3,7 +3,10 @@ import {modules} from "../../constants/types";
 
 
 export const getGeneSuggestions = (searchTerm) => async (dispatch) =>{
-    const result = await SascWebApi.get(`/items/gene?limit=5&filter[symbol][logical]=or&filter[symbol][rlike]=${searchTerm}%&filter[description][logical]=or&filter[description][rlike]=${searchTerm}%&filter[ensg][logical]=or&filter[ensg][rlike]=${searchTerm}%`);
+    const result = await SascWebApi.get(`/items/gene?limit=5&filter[symbol][logical]=or&
+    filter[symbol][rlike]=${searchTerm}%&filter[description][logical]=or&
+    filter[description][rlike]=${searchTerm}%&filter[ensg][logical]=or&filter[ensg][rlike]=${searchTerm}%
+    &filter[symbol][nnull]`);
     dispatch({type: modules.geneFinder.GET_SUGGESTIONS, payload: result.data.data})
 };
 

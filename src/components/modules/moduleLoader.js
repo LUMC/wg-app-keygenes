@@ -9,7 +9,8 @@ import ContactCardsModule from "./ContactCardsModule";
 import FormModule from "./FormModule";
 import {throwError} from "../../utils/generalHelpers";
 import {moduleError} from "../../constants/errorTypes";
-import GeneFinderModule from "./GeneFinderModule";
+import GeneFinder from "./GeneBrowserModule/GeneFinder";
+import GeneBrowserModule from "./GeneBrowserModule";
 import Page from "../Page";
 
 const ModuleLoader = (props) =>  {
@@ -63,7 +64,7 @@ const ModuleLoader = (props) =>  {
             );
         case 'transcript-finder':
             return (
-                <GeneFinderModule
+                <GeneBrowserModule
                     collection={props.collection}
                     moduleData={props.modulesData.geneFinder}
                     getGeneSuggestions={props.getGeneSuggestions}

@@ -18,7 +18,7 @@ import {directProtocol} from '../actions/protocols/directProtocolActions'
 import {projectName, baseUrl} from "../config.js";
 import {throwError} from "../utils/generalHelpers";
 import {configError} from '../constants/errorTypes'
-import GeneFinderModule from "../components/modules/GeneFinderModule";
+import GeneFinder from "../components/modules/GeneBrowserModule/GeneFinder";
 import {getGeneSuggestions, setGene, getGeneCounts} from "../actions/modules/geneFinderActions";
 
 
