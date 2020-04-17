@@ -20,7 +20,7 @@ class GeneBrowser extends Component {
         },
         {
             menuItem: { key: 'tissueFinder', icon: 'heart', content: 'View tissues' },
-            render: () => <Tab.Pane attached={false}>Tab 2 Content</Tab.Pane>,
+            render: () => <Tab.Pane attached={false}>Coming soon!</Tab.Pane>,
         },
     ];
 
