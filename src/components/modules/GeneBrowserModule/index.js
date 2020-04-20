@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Grid, Tab} from 'semantic-ui-react'
 import GeneFinder from "./GeneFinder";
+import TissueFinder from "./TissueFinder";
+import ModuleLoader from "../moduleLoader";
 
 class GeneBrowser extends Component {
     panes = [
@@ -20,7 +22,13 @@ class GeneBrowser extends Component {
         },
         {
             menuItem: { key: 'tissueFinder', icon: 'heart', content: 'View tissues' },
-            render: () => <Tab.Pane attached={false}>Coming soon!</Tab.Pane>,
+            render: () => <Tab.Pane attached={false}>
+                <TissueFinder
+                    collection={this.props.collection}
+                    setTissue={this.props.setTissue}
+                    moduleData={this.props.moduleData}
+                />
+            </Tab.Pane>,
         },
     ];
 

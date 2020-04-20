@@ -68,6 +68,7 @@ const ModuleLoader = (props) =>  {
                     collection={props.collection}
                     moduleData={props.modulesData.geneFinder}
                     getGeneSuggestions={props.getGeneSuggestions}
+                    setTissue={props.setTissue}
                     setGene={props.setGene}
                     setting={props.setting}
                     getGeneCounts={props.getGeneCounts}

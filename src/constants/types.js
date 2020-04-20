@@ -21,7 +21,8 @@ export const modules ={
     geneFinder: {
         GET_SUGGESTIONS: "GET_SUGGESTIONS",
         SET_ACTIVE_GENE: "SET_ACTIVE_GENE",
-        GET_GENE_COUNTS: "GET_GENE_COUNTS"
+        GET_GENE_COUNTS: "GET_GENE_COUNTS",
+        SET_ACTIVE_TISSUE: "SET_ACTIVE_TISSUE"
     }
 
 };

@@ -19,7 +19,7 @@ import {projectName, baseUrl} from "../config.js";
 import {throwError} from "../utils/generalHelpers";
 import {configError} from '../constants/errorTypes'
 import GeneFinder from "../components/modules/GeneBrowserModule/GeneFinder";
-import {getGeneSuggestions, setGene, getGeneCounts} from "../actions/modules/geneFinderActions";
+import {getGeneSuggestions, setGene, getGeneCounts, setTissue} from "../actions/modules/geneFinderActions";
 
 
 class AppContainer extends Component {
@@ -100,6 +100,7 @@ class AppContainer extends Component {
                         render={(props) => this.wrapTransition(
                             <Page
                                 {...props}
+                                setTissue={this.props.setTissue}
                                 modulesData={this.props.modules}
                                 getGeneSuggestions={this.props.getGeneSuggestions}
                                 setGene={this.props.setGene}
@@ -134,6 +135,7 @@ class AppContainer extends Component {
                                   modulesData={this.props.modules}
                                   getGeneSuggestions={this.props.getGeneSuggestions}
                                   setGene={this.props.setGene}
+                                  setTissue={this.props.setTissue}
                                   getGeneCounts={this.props.getGeneCounts}
                                   path={'/'+this.props.config[0].reference}
                                   config={this.props.config[0]}
@@ -201,6 +203,7 @@ export default connect(mapStateToProps,{
         directProtocol,
         getGeneSuggestions,
         setGene,
-        getGeneCounts
+        getGeneCounts,
+        setTissue
 }
     )(AppContainer)

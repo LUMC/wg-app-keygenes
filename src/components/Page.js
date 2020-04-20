@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import ModuleLoader from './modules/moduleLoader'
 import {Grid, Header} from "semantic-ui-react";
+import {setTissue} from "../actions/modules/geneFinderActions";
 
 class Page extends Component{
 
@@ -22,7 +23,6 @@ class Page extends Component{
                 if (setting.module === 'form'){
                     return(
                         <ModuleLoader
-                            setGene={this.props.setGene}
                             getGeneSuggestions={this.props.getGeneSuggestions}
                             getGeneCounts={this.props.getGeneCounts}
                             onSubmit={this.props.onSubmit}
@@ -40,6 +40,7 @@ class Page extends Component{
                 if(setting.module === 'transcript-finder'){
                     return (
                         <ModuleLoader
+                            setTissue={this.props.setTissue}
                             modulesData={this.props.modulesData}
                             setGene={this.props.setGene}
                             getGeneSuggestions={this.props.getGeneSuggestions}
