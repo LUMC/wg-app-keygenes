@@ -19,6 +19,6 @@ export const setGene = (item) =>{
 }
 export const setTissue = (activeTissue) =>  async (dispatch) =>{
     const result = await SascWebApi.post(`/custom/data/tissue-data`,
-        {tissueId: activeTissue.id, amount: 20})
+        {tissueId: activeTissue.id, amount: 100})
     dispatch({type: modules.geneFinder.SET_ACTIVE_TISSUE, payload: {activeTissue:activeTissue, data:result.data}})
 }

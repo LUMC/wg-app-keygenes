@@ -51,6 +51,7 @@ class GeneFinder extends Component {
         if (this.props.moduleData.geneCounts.length > 0) {
             const plotTraces = this.generatePlotTraces(this.props.moduleData.geneCounts)
             return (
+                <>
                 <Plot
                     data={plotTraces}
                     layout={{
@@ -64,6 +65,7 @@ ${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.act
                         }
                     }}
                 />
+                </>
             )
         } else if (this.state.selected) {
             return (
