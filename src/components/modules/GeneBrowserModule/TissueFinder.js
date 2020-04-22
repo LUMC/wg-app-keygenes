@@ -16,9 +16,10 @@ import {
 import _ from 'lodash'
 import Plot from '../../../../node_modules/react-plotly.js/react-plotly';
 import SmartDataTable from "react-smart-data-table";
+import FileSaver from 'file-saver'
+import CsvDownload from 'react-json-to-csv'
 
-
-const initialState = {isLoading: false, value: '', selected: false, stages: [], options: [], genes: []}
+const initialState = {stages: [], options: [], searchTerm: '', downloadData: []}
 
 class TissueFinder extends Component {
 
@@ -39,7 +40,9 @@ class TissueFinder extends Component {
     state = initialState;
 
     componentDidMount() {
-        this.setState({stages: _.chain(this.props.collection.stage).keyBy('id').mapValues('name').value()})
+        this.setState({stages: _.chain(this.props.collection.stage).
+            keyBy('id').
+            mapValues('name').value()})
         this.setState({
             options: _.map(this.props.collection.tissue, (state) => ({
                 key: state.id,
@@ -54,9 +57,8 @@ class TissueFinder extends Component {
     }
     generatePlotTraces = (data, genes) => {
         data = _.map(data, (item) => {
-            if (genes.includes(item.ensg)) return item
+            if (genes.includes(item.symbol)) return item
         })
-        console.log(data)
         data = _.compact(data)
         const plotTraces = [];
         const stage_groups = _.groupBy(data, 'stage')
@@ -66,7 +68,7 @@ class TissueFinder extends Component {
                 return currentObject.count !== "nan";
             });
             const trace = {
-                x: _.map(items, 'ensg'),
+                x: _.map(items, 'symbol'),
                 y: _.map(items, 'count'),
                 mode: 'markers',
                 type: 'scatter',
@@ -85,7 +87,7 @@ class TissueFinder extends Component {
         if (this.props.moduleData.tissueCounts.length > 0) {
             let genes = _.map(this.props.moduleData.tissueGenes, (gene, index) => {
                 if (index < 20) {
-                    return gene.ensg
+                    return gene.symbol
                 }
                 return null
             })
@@ -97,16 +99,16 @@ class TissueFinder extends Component {
                         Top 25 expressed genes in {this.props.moduleData.activeTissue.text} tissue
                     </Header>
                     <center>
-                    <Plot
-                        data={plotTraces}
-                        layout={{
-                            width: 1100, height: 600, hovermode: 'closest',
-                            xaxis: {
-                                categoryorder: "array",
-                                categoryarray: _.values(genes)
-                            }
-                        }}
-                    />
+                        <Plot
+                            data={plotTraces}
+                            layout={{
+                                width: 1100, height: 600, hovermode: 'closest',
+                                xaxis: {
+                                    categoryorder: "array",
+                                    categoryarray: _.values(genes)
+                                }
+                            }}
+                        />
                     </center>
                 </>
             )
@@ -126,17 +128,35 @@ class TissueFinder extends Component {
     }
 
     renderTableContent = () => {
-        return this.props.moduleData.tissueGenes.map(
-            (gene, index) => (
-                <Table.Row>
-                    <Table.Cell>{index + 1}</Table.Cell>
-                    <Table.Cell>{gene.ensg}</Table.Cell>
-                    <Table.Cell>{gene.symbol}</Table.Cell>
-                    <Table.Cell>{gene.description}</Table.Cell>
-                    <Table.Cell>{gene.count_avg}</Table.Cell>
-                </Table.Row>
-            )
+        const content = this.props.moduleData.tissueGenes.map(
+            (gene, index) => {
+                if (!(gene.ensg.includes(this.state.searchTerm)
+                    || gene.symbol.includes(this.state.searchTerm)
+                    || gene.description.includes(this.state.searchTerm))) return null
+                return (
+                    <Table.Row key={`tissueItem-${index}`}>
+                        <Table.Cell>{index + 1}</Table.Cell>
+                        <Table.Cell>
+                            <a
+                                className={'tableLink'}
+                                href={`https://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=${gene.ensg}`}
+                                target={'_blank'}
+                            >
+                                {gene.ensg}
+                            </a>
+                        </Table.Cell>
+                        <Table.Cell>{gene.symbol}</Table.Cell>
+                        <Table.Cell>{gene.description}</Table.Cell>
+                        <Table.Cell>{gene.count_avg}</Table.Cell>
+                    </Table.Row>
+                )
+            }
         )
+        return _.compact(content)
+    }
+
+    filterGeneResults = (e) => {
+        this.setState({searchTerm: e.target.value})
     }
 
     renderTable() {
@@ -153,15 +173,18 @@ class TissueFinder extends Component {
                         <Form.Field
                             width={10}
                         >
-                            <Input action={{icon: 'search'}} placeholder='Search...'/>
+                            <Input onChange={this.filterGeneResults} action={{icon: 'search'}} placeholder='Search...'/>
                         </Form.Field>
                         <Form.Field
                             width={3}
                         >
-                            <button className=" primary ui labeled icon button">
+                            <CsvDownload
+                                filename={`KeyGenes-${this.props.moduleData.activeTissue.text}-tissue.csv`}
+                                data={this.renderDownloadData()}
+                                className=" primary ui labeled icon button" >
                                 <i className="file icon right"></i>
-                                Save to CSV file
-                            </button>
+                                Save table (.CSV)
+                            </CsvDownload>
                         </Form.Field>
                     </Form.Group>
                 </Form>
@@ -182,7 +205,17 @@ class TissueFinder extends Component {
             </>
         )
     }
+    renderDownloadData = () =>{
+        return _.compact(_.map(this.props.moduleData.tissueGenes, (
+            (gene) => ({
+                ENSG: gene.ensg,
+                Symbol: gene.symbol,
+                AVG_count: gene.count_avg,
+                Description: gene.description
 
+            })
+        )))
+    }
     render() {
         const active = this.props.moduleData.activeTissue.id
         return (
@@ -201,7 +234,7 @@ class TissueFinder extends Component {
                 </Grid.Row>
                 <Grid.Row centered>
                     <Grid.Column width={16}>
-                            {this.renderGraph()}
+                        {this.renderGraph()}
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
