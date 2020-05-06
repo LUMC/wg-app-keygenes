@@ -14,7 +14,7 @@
     "react-device": "^0.8.1",
     "react-dom": "^16.13.1",
     "react-json-to-csv": "^1.0.4",
-    "react-particles-js": "^2.7.1",
+    "react-particles-js": "^2.7.0",
     "react-plotly": "^1.0.0",
     "react-plotly.js": "^2.4.0",
     "react-pose": "^4.0.10",
