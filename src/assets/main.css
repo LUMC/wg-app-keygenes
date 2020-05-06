@@ -126,3 +126,6 @@ a.tableLink{
     color: #0d71bb;
 
 }
+.full-size{
+    width: 100% !important;
+}

@@ -69,7 +69,7 @@ class TissueFinder extends Component {
             });
             const trace = {
                 x: _.map(items, 'symbol'),
-                y: _.map(items, 'count'),
+                y: _.map(items, 'CPM'),
                 mode: 'markers',
                 type: 'scatter',
                 name: stages[key],
@@ -100,12 +100,16 @@ class TissueFinder extends Component {
                     </Header>
                     <center>
                         <Plot
+                            className={'full-size large'}
                             data={plotTraces}
                             layout={{
-                                width: 1100, height: 600, hovermode: 'closest',
+                                height: 600, hovermode: 'closest',
                                 xaxis: {
                                     categoryorder: "array",
                                     categoryarray: _.values(genes)
+                                },
+                                yaxis:{
+                                    title: "Counts per million (CPM)"
                                 }
                             }}
                         />
@@ -147,7 +151,7 @@ class TissueFinder extends Component {
                         </Table.Cell>
                         <Table.Cell>{gene.symbol}</Table.Cell>
                         <Table.Cell>{gene.description}</Table.Cell>
-                        <Table.Cell>{gene.count_avg}</Table.Cell>
+                        <Table.Cell>{gene.CPM_avg}</Table.Cell>
                     </Table.Row>
                 )
             }
@@ -195,7 +199,7 @@ class TissueFinder extends Component {
                             <Table.HeaderCell>ENSG</Table.HeaderCell>
                             <Table.HeaderCell>Symbol</Table.HeaderCell>
                             <Table.HeaderCell>Description</Table.HeaderCell>
-                            <Table.HeaderCell>Average count</Table.HeaderCell>
+                            <Table.HeaderCell>Average CPM</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
