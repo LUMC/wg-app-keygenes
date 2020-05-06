@@ -64,14 +64,6 @@ class App extends Component{
                                         "size": {
                                             "value": 3
                                         }
-                                    },
-                                    "interactivity": {
-                                        "events": {
-                                            "onhover": {
-                                                "enable": true,
-                                                "mode": "repulse"
-                                            }
-                                        }
                                     }
                                 }} />
                         </div>
