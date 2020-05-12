@@ -97,6 +97,7 @@ class TissueFinder extends Component {
             })
             genes = _.compact(genes)
             const plotTraces = this.generatePlotTraces(this.props.moduleData.tissueCounts, genes)
+            console.log(genes)
             return (
                 <>
                     <Header as='h3' dividing>
@@ -110,7 +111,6 @@ class TissueFinder extends Component {
                                 showlegend: true,
                                 height: 600, hovermode: 'closest',
                                 xaxis: {
-                                    categoryorder: "array",
                                     categoryarray: _.values(genes)
                                 },
                                 yaxis:{

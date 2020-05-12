@@ -113,6 +113,9 @@ ${this.props.moduleData.activeGene.symbol ? ` (${this.props.moduleData.activeGen
 ${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.activeGene.description}` : ''}`,
                         yaxis:{
                             title: "Counts per million (CPM)"
+                        },
+                        xaxis:{
+                            categoryarray: _.map(this.state.tissues, (item) => item)
                         }
                     }}
                 />
