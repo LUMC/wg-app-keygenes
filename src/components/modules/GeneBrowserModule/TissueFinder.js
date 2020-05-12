@@ -19,24 +19,28 @@ import SmartDataTable from "react-smart-data-table";
 import FileSaver from 'file-saver'
 import CsvDownload from 'react-json-to-csv'
 
-const initialState = {stages: [], options: [], searchTerm: '', downloadData: []}
+const stages = [
+    {
+        key: 1,
+        text: 'all',
+        value: -1
+    },
+    {
+        key: 2,
+        text: 'adult',
+        value: 1
+    },
+    {
+        key: 3,
+        text: 'fetal',
+        value: 0
+    },
+]
+
+const initialState = {stages: [], options: [], searchTerm: '', downloadData: [], stageOptions: stages, stageActive: -1, stageName: 'all'}
 
 class TissueFinder extends Component {
 
-    header = {
-        columnKey: {
-            text: 'Column 1',
-            invisible: false,
-            sortable: true,
-            filterable: true,
-        },
-        tableActions: {
-            text: 'Actions',
-            invisible: false,
-            sortable: false,
-            filterable: false,
-        }
-    }
     state = initialState;
 
     componentDidMount() {
@@ -53,7 +57,7 @@ class TissueFinder extends Component {
     }
 
     setActiveTissue = (e, data) => {
-        this.props.setTissue({id: data.value, text: e.target.innerText})
+        this.props.setTissue({id: data.value, text: e.target.innerText}, this.state.stageActive)
     }
     generatePlotTraces = (data, genes) => {
         data = _.map(data, (item) => {
@@ -96,13 +100,14 @@ class TissueFinder extends Component {
             return (
                 <>
                     <Header as='h3' dividing>
-                        Top 25 expressed genes in {this.props.moduleData.activeTissue.text} tissue
+                        Top 20 expressed genes in {this.state.stageName} {this.props.moduleData.activeTissue.text} tissue
                     </Header>
                     <center>
                         <Plot
                             className={'full-size large'}
                             data={plotTraces}
                             layout={{
+                                showlegend: true,
                                 height: 600, hovermode: 'closest',
                                 xaxis: {
                                     categoryorder: "array",
@@ -127,6 +132,8 @@ class TissueFinder extends Component {
                     </Segment>
                 </div>
             )
+        }else if (this.props.moduleData.geneCounts.length === 0 && this.props.moduleData.activeTissue != ''){
+            return <div><center><b>No gene expression found!</b></center></div>
         }
         return null
     }
@@ -158,7 +165,13 @@ class TissueFinder extends Component {
         )
         return _.compact(content)
     }
-
+    setActiveStage = (e, data) =>{
+        this.setState({stageActive: data.value})
+        this.setState({stageName: e.target.innerText})
+        if(this.props.moduleData.activeTissue.id != ''){
+            this.props.setTissue(this.props.moduleData.activeTissue, data.value)
+        }
+    }
     filterGeneResults = (e) => {
         this.setState({searchTerm: e.target.value})
     }
@@ -170,7 +183,7 @@ class TissueFinder extends Component {
         return (
             <>
                 <Header as='h3' dividing>
-                    Top 100 expressed genes in {this.props.moduleData.activeTissue.text} tissue
+                    Top 100 expressed genes in {this.state.stageName} {this.props.moduleData.activeTissue.text} tissue
                 </Header>
                 <Form>
                     <Form.Group>
@@ -227,6 +240,13 @@ class TissueFinder extends Component {
                 <Grid.Row centered>
                     <Grid.Column width={8}>
                         <Form>
+                            <Form.Field>
+                                <label>Select a development stage</label>
+                                <Dropdown value={this.state.stageActive} placeholder='Stage' search selection
+                                          options={this.state.stageOptions}
+                                          onChange={this.setActiveStage}
+                                          />
+                            </Form.Field>
                             <Form.Field>
                                 <label>Select a tissue</label>
                                 <Dropdown value={active} placeholder='Tissue' search selection

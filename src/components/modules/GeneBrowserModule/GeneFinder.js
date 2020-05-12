@@ -17,7 +17,7 @@ import _ from 'lodash'
 import Plot from '../../../../node_modules/react-plotly.js/react-plotly';
 
 
-const initialState = {isLoading: false, value: '', selected: false, tissues: [], stages: []}
+const initialState = {isLoading: false, value: '', selected: false, tissues: [], stages: [], graphSetting:'all'}
 
 class GeneFinder extends Component {
     state = initialState;
@@ -36,6 +36,8 @@ class GeneFinder extends Component {
         })
     }
     generatePlotTraces = (data) => {
+        if(this.state.graphSetting === 'sex')
+            return []
         const plotTraces = [];
         const stage_groups = _.groupBy(data, 'stage')
         const stages = this.state.stages;
@@ -59,6 +61,8 @@ class GeneFinder extends Component {
         return plotTraces
     }
     generateSexPlotTraces = (data) => {
+        if(this.state.graphSetting === 'stage')
+            return []
         const plotTraces = [];
         const sex_groups = _.groupBy(data, 'sex')
         const stages = {'F': 'Female', 'M': 'Male'};
@@ -72,23 +76,35 @@ class GeneFinder extends Component {
                 mode: 'markers',
                 type: 'scatter',
                 name: stages[key],
-                opacity: 0.5,
+                opacity: (this.state.graphSetting === 'all')?0.1:0.5,
                 marker: {
-                    size: 20
+                    symbol:1,
+                    size: (this.state.graphSetting === 'all')?40:20
                 }
             };
             plotTraces.push(trace)
         });
         return plotTraces
     }
+    setGraph = (name) =>{
+        this.setState({graphSetting: name})
+    }
     renderGraph() {
         if (this.props.moduleData.geneCounts.length > 0) {
             const plotTraces = this.generatePlotTraces(this.props.moduleData.geneCounts)
+            const plotTracesSex = this.generateSexPlotTraces(this.props.moduleData.geneCounts)
             return (
                 <>
+                    <center>
+                    <Button.Group>
+                        <Button active={(this.state.graphSetting === 'stage')} onClick={() => this.setGraph('stage')}>stages</Button>
+                        <Button active={(this.state.graphSetting === 'sex')} onClick={() => this.setGraph('sex')}>sex</Button>
+                        <Button active={(this.state.graphSetting === 'all')} onClick={() => this.setGraph('all')}>all</Button>
+                    </Button.Group>
+                    </center>
                 <Plot
                     className={'full-size large'}
-                    data={plotTraces}
+                    data={[...plotTracesSex, ...plotTraces]}
                     layout={{
                         showlegend: true,
                         height: 600, hovermode: 'closest',
@@ -116,41 +132,7 @@ ${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.act
         }
         return null
     }
-    renderSexGraph() {
-        if(this.props.moduleData.geneCounts.length > 0) {
-            const plotTraces = this.generateSexPlotTraces(this.props.moduleData.geneCounts)
-            return (
-                <>
-                    <Plot
-                        className={'full-size large'}
-                        data={plotTraces}
-                        layout={{
-                            showlegend: true,
-                            height: 600, hovermode: 'closest',
-                            title: `Expression in ${this.props.moduleData.activeGene.ensg}\ 
-${this.props.moduleData.activeGene.symbol ? ` (${this.props.moduleData.activeGene.symbol})` : ''}\
-${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.activeGene.description}` : ''}`,
-                            yaxis:{
-                                title: "Counts per million (CPM)"
-                            }
-                        }}
-                    />
-                </>
-            )
-        } else if (this.state.selected) {
-            return (
-                <div>
-                    <Segment>
-                        <Dimmer active inverted>
-                            <Loader content='Preparing expression data...'/>
-                        </Dimmer>
-                        <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png'/>
-                    </Segment>
-                </div>
-            )
-        }
-        return null
-    }
+
     handleResultSelect = (e, {result}) => {
         this.props.setGene(result)
         this.setState({value: result.ensg, selected: true})
@@ -160,7 +142,6 @@ ${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.act
         this.props.getGeneSuggestions(event.target.value);
         this.setState({value: event.target.value, selected: false})
     }
-
     render() {
         const {isLoading, value, tissues, stages} = this.state;
         if (tissues.length < 1 || stages.length < 1) {
@@ -200,13 +181,6 @@ ${this.props.moduleData.activeGene.description ? ` - ${this.props.moduleData.act
                     <Grid.Column width={16}>
                         <center>
                         {this.renderGraph()}
-                        </center>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row centered>
-                    <Grid.Column width={16}>
-                        <center>
-                            {this.renderSexGraph()}
                         </center>
                     </Grid.Column>
                 </Grid.Row>
