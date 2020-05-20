@@ -14,9 +14,8 @@ import {
     Segment, Table
 } from "semantic-ui-react";
 import _ from 'lodash'
-import Plot from '../../../../node_modules/react-plotly.js/react-plotly';
-import SmartDataTable from "react-smart-data-table";
-import FileSaver from 'file-saver'
+import Plotly from 'plotly.js-basic-dist'
+import createPlotlyComponent from 'react-plotly.js/factory';
 import CsvDownload from 'react-json-to-csv'
 
 const stages = [
@@ -88,6 +87,7 @@ class TissueFinder extends Component {
     }
 
     renderGraph() {
+        const Plot = createPlotlyComponent(Plotly);
         if (this.props.moduleData.tissueCounts.length > 0) {
             let genes = _.map(this.props.moduleData.tissueGenes, (gene, index) => {
                 if (index < 20) {

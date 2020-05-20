@@ -14,8 +14,8 @@ import {
     Segment
 } from "semantic-ui-react";
 import _ from 'lodash'
-import Plot from '../../../../node_modules/react-plotly.js/react-plotly';
-
+import createPlotlyComponent from "react-plotly.js/factory";
+import Plotly from "plotly.js-basic-dist";
 
 const initialState = {isLoading: false, value: '', selected: false, tissues: [], stages: [], graphSetting:'all'}
 
@@ -90,6 +90,7 @@ class GeneFinder extends Component {
         this.setState({graphSetting: name})
     }
     renderGraph() {
+        const Plot = createPlotlyComponent(Plotly);
         if (this.props.moduleData.geneCounts.length > 0) {
             const plotTraces = this.generatePlotTraces(this.props.moduleData.geneCounts)
             const plotTracesSex = this.generateSexPlotTraces(this.props.moduleData.geneCounts)
