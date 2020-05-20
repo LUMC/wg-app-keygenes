@@ -12,6 +12,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-csv": "^2.0.3",
     "react-device": "^0.8.1",
+    "react-device-detect": "^1.12.1",
     "react-dom": "^16.13.1",
     "react-json-to-csv": "^1.0.4",
     "react-particles-js": "2.7.0",

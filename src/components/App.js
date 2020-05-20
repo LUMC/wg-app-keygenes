@@ -10,6 +10,12 @@ import SplitText from 'react-pose-text';
 import {Link, Router} from "react-router-dom";
 import history from "../history";
 import Particles from "react-particles-js";
+import {
+    BrowserView,
+    MobileView,
+    isBrowser,
+    isMobile
+} from "react-device-detect";
 
 const charPoses = {
     exit: {opacity: 0, y: 20},
@@ -51,7 +57,7 @@ class App extends Component {
         }
         const subitems = []
         return (
-            <Menu inverted widths={6} className={'mainMenu'} pointing secondary>
+            <Menu inverted widths={6} className={'mainMenu'} pointing secondary stackable>
                 <Router history={history}>
                     {
                         this.props.menu.map(
@@ -83,6 +89,7 @@ class App extends Component {
             <>
                 <div className='appContent'>
                     <div className={'welcome'}>
+                        <BrowserView>
                         <Transition
                             visible={this.props.sloganText}
                             animation={"fade up"}
@@ -103,6 +110,7 @@ class App extends Component {
                                     }}/>
                             </div>
                         </Transition>
+                        </BrowserView>
                         <Container>
                             <Grid columns={1}>
                                 <Grid.Row verticalAlign='middle' className={'welcome-box'}>

@@ -3,6 +3,7 @@ import {Grid, Tab} from 'semantic-ui-react'
 import GeneFinder from "./GeneFinder";
 import TissueFinder from "./TissueFinder";
 import ModuleLoader from "../moduleLoader";
+import {BrowserView, MobileView} from "react-device-detect";
 
 class GeneBrowser extends Component {
     panes = [
@@ -34,11 +35,17 @@ class GeneBrowser extends Component {
 
     render() {
         return (
+
             <Grid.Column width={16}>
+                <BrowserView>
                 <Tab
                     menu={{secondary: true, pointing: true}}
                     panes={this.panes}
                 />
+                </BrowserView>
+                <MobileView>
+                    <p>The KeyGenes browser module is only accessible by desktop or tablet!</p>
+                </MobileView>
             </Grid.Column>
         )
     }

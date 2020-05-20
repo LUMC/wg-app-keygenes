@@ -2,6 +2,7 @@ import React from 'react'
 import {Grid, Icon, Image} from "semantic-ui-react";
 import {Card} from "semantic-ui-react";
 import {throwError, validateAttributes} from "../../utils/generalHelpers";
+import {isMobile, isTablet, isBrowser} from "react-device-detect";
 
 const checkImage = (cardData) =>{
     try{
@@ -43,7 +44,7 @@ const ContactCardsModule = (props) =>{
         return (
             <Grid.Row>
                 <Grid.Column>
-                    <Card.Group textAlign={'center'} itemsPerRow={3}>
+                    <Card.Group textAlign={'center'} itemsPerRow={(isBrowser || isTablet)?3:1}>
                         {props.collection.map(
                             (item, key) =>{
                                 return renderCard(item, key)

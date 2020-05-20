@@ -2,6 +2,7 @@ import React from 'react'
 import {Grid} from "semantic-ui-react";
 import Timeline from "react-timeline-semantic-ui";
 import {throwError, validateAttributes} from "../../utils/generalHelpers";
+import {BrowserView} from "react-device-detect";
 
 const module = 'tool_steps';
 const required_attributes = ['icon', 'title', 'step_name', 'description', 'tags'];
@@ -12,6 +13,7 @@ const ToolStepModule = (props) =>{
         if (!validateAttributes(props.collection[0], required_attributes)){
             throwError.moduleAttr(module, required_attributes);return null}
         return (
+            <BrowserView>
             <Grid.Row>
                 <Grid.Column className={'timeLine'}>
                     {props.collection.map(
@@ -35,6 +37,7 @@ const ToolStepModule = (props) =>{
                     )}
                 </Grid.Column>
             </Grid.Row>
+            </BrowserView>
         )
     }
     return null

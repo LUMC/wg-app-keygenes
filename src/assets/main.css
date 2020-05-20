@@ -134,3 +134,8 @@ a.tableLink{
 .full-size{
     width: 100% !important;
 }
+@media (max-width: 960px) {
+    .introName{
+        font-size: 2em;
+    }
+}
