@@ -13,7 +13,7 @@ const ToolStepModule = (props) =>{
         if (!validateAttributes(props.collection[0], required_attributes)){
             throwError.moduleAttr(module, required_attributes);return null}
         return (
-            <BrowserView>
+
             <Grid.Row>
                 <Grid.Column className={'timeLine'}>
                     {props.collection.map(
@@ -37,7 +37,6 @@ const ToolStepModule = (props) =>{
                     )}
                 </Grid.Column>
             </Grid.Row>
-            </BrowserView>
         )
     }
     return null

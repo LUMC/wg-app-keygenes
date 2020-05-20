@@ -12,6 +12,7 @@ import {moduleError} from "../../constants/errorTypes";
 import GeneFinder from "./GeneBrowserModule/GeneFinder";
 import GeneBrowserModule from "./GeneBrowserModule";
 import Page from "../Page";
+import {isMobile} from "react-device-detect";
 
 const ModuleLoader = (props) =>  {
     switch(props.setting.module) {
@@ -29,6 +30,7 @@ const ModuleLoader = (props) =>  {
                 />
             );
         case 'tool_steps':
+            if(isMobile) return null;
             return (
                 <ToolStepModule
                     collection={props.collection}
